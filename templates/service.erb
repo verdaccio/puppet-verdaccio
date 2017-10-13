@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# Sinopia deamon control script
+# Sinopia daemon control script
 #
 # chkconfig: - 80 20
 # description: Verdaccio NPM Proxy/Cache Server
@@ -8,8 +8,8 @@
 # pidfile: <%= @install_path %>/srv.pid
 # config: <%= @install_path %>/config.yaml
 Verdaccio_BIN=<%= @install_path %>/node_modules/verdaccio/bin/verdaccio
-Verdaccio_USER=<%= @deamon_user %>
-Verdaccio_LOG=<%= @install_path %>/deamon.log
+Verdaccio_USER=<%= @daemon_user %>
+Verdaccio_LOG=<%= @install_path %>/daemon.log
 Verdaccio_PIDFILE=<%= @install_path %>/srv.pid
 EXEC_DIR=<%= @install_path %>
 STOP_TIMEOUT=10

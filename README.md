@@ -40,7 +40,7 @@ You can also override several configuration parameters.
     install_dir        	    => 'verdaccioxy',
     conf_admin_pw_hash 	    => 'your-pw-hash',
     conf_port          	    => '8080',
-    deamon_user        	    => 'verdaccioxy',
+    daemon_user        	    => 'verdaccioxy',
     conf_listen_to_address  => '127.0.0.1',
     http_proxy              => 'http://proxy.com:3128',
     https_proxy             => 'http://proxy.com:3128',
@@ -58,7 +58,7 @@ The default values for all so far configurable parameters are:
   class { '::verdaccio':
     install_root       	      => '/opt',
     install_dir        	      => 'verdaccio',
-    deamon_user        	      => 'verdaccio',
+    daemon_user        	      => 'verdaccio',
     conf_listen_to_address    => '0.0.0.0',
     conf_port          	      => '4783',
     conf_admin_pw_hash
