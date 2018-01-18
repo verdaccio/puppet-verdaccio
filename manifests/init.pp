@@ -71,12 +71,13 @@ class verdaccio (
     default => undef,
     true => Service['verdaccio']
   }
-  nodejs::npm { "${install_path}:${package_name}":
-    version      => $version,
-    ensure       => present,
-    require      => [File[$install_path,$modules_path],User[$daemon_user]],
-    notify       => $service_notify,
-    exec_as_user => $daemon_user,
+  nodejs::npm { "${package_name}":
+    ensure   => latest,
+    target   => $install_path,
+    home_dir => $install_path,
+    require  => [File[$install_path,$modules_path],User[$daemon_user]],
+    notify   => $service_notify,
+    user     => $daemon_user,
   }
 
 ###
