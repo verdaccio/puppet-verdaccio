@@ -6,9 +6,9 @@ users:
   admin:
     # crypto.createHash('sha1').update(pass).digest('hex')
     password: <%=@conf_admin_pw_hash %>
-<% if @conf_user_pw_combinations != nil %>
-<% @conf_user_pw_combinations.each do |combi|
-         -%><%= combi[0] %>:
+<%- if @conf_user_pw_combinations != nil -%>
+<%- @conf_user_pw_combinations.each do |combi|
+         -%>  <%= combi[0] %>:
     password: <%= combi[1] %>
 <% end -%>
 <% end -%>
