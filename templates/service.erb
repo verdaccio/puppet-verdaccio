@@ -7,6 +7,14 @@
 # processname: Verdaccio
 # pidfile: <%= @install_path %>/srv.pid
 # config: <%= @install_path %>/config.yaml
+### BEGIN INIT INFO
+# Provides:             verdaccio
+# Required-Start:       $local_fs $remote_fs $syslog
+# Required-Stop:        $local_fs $remote_fs $syslog
+# Default-Start:        2 3 4 5
+# Default-Stop:         0 1 6
+# Short-Description:    Verdaccio NPM Proxy/Cache Server
+### END INIT INFO
 Verdaccio_BIN=<%= @install_path %>/node_modules/verdaccio/bin/verdaccio
 Verdaccio_USER=<%= @daemon_user %>
 Verdaccio_LOG=<%= @install_path %>/daemon.log
