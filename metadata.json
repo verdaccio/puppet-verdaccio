@@ -1,9 +1,9 @@
 {
-  "name": "puppet-verdaccio",
+  "name": "verdaccio-verdaccio",
   "version": "0.0.1",
   "author": "Dharmender Singh",
   "summary": "Installing Verdaccio Npm Package",
-  "license": "Apache 2.0",
+  "license": "MIT",
   "source": "github",
   "project_page": null,
   "issues_url": null,
