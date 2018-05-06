@@ -60,7 +60,7 @@ The default values for all so far configurable parameters are:
     install_dir        	      => 'verdaccio',
     daemon_user        	      => 'verdaccio',
     conf_listen_to_address    => '0.0.0.0',
-    conf_port          	      => '4783',
+    conf_port          	      => '4873',
     conf_admin_pw_hash
     conf_user_pw_combinations => undef,
     http_proxy                => '',
