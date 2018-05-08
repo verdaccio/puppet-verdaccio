@@ -1,0 +1,9 @@
+  '<%= @package %>':
+    allow_access: <%= @allow_access %>
+    allow_publish: <%= @allow_publish %>
+<% if @proxy != 'DEFAULT' -%>
+    proxy: <%= @proxy %>
+<% end -%>
+<% if @storage != 'DEFAULT' -%>
+    storage: <%= @storage %>
+<% end -%>

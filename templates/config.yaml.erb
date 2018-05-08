@@ -12,47 +12,15 @@ users:
     password: <%= combi[1] %>
 <% end -%>
 <% end -%>
-# a list of other known repositories we can talk to
-uplinks:
-  npmjs:
-    url: https://registry.npmjs.org/
-
-    # amount of time (in milliseconds) to wait for repository to respond
-    # before giving up and use the local cached copy
-    #timeout: 30000
-
-    # maximum time (in seconds) in which data is considered up to date
-    #
-    # default is 2 minutes, so server won't request the same data from
-    # uplink if a similar request was made less than 2 minutes ago
-    #maxage: 120
-    maxage: <%=@conf_max_age_in_sec %>
-
-packages:
-  # uncomment this for packages with "local-" prefix to be available
-  # for admin only, it's a recommended way of handling private packages
-  #'local-*':
-  #  allow_access: admin
-  #  allow_publish: admin
-  #  # you can override storage directory for a group of packages this way:
-  #  storage: 'local_storage'
-
-  '*':
-    # allow all users to read packages ('all' is a keyword)
-    # this includes non-authenticated users
-    allow_access: all
-
-    # allow 'admin' to publish packages
-    allow_publish: admin
-        # if package is not available locally, proxy requests to 'npmjs' registry
-    proxy: npmjs
 
 #####################################################################
 # Advanced settings
 #####################################################################
 
 # if you use nginx with custom path, use this to override links
-#url_prefix: https://dev.company.local/sinopia/
+<% if @url_prefix != nil -%>
+url_prefix: <%= @url_prefix %>
+<% end -%>
 
 # you can specify listen address (or simply a port)
 # listen: localhost:4783
@@ -86,4 +54,21 @@ https_proxy: <%= @https_proxy %>
 # increase it if you have "request entity too large" errors
 #max_body_size: 1mb
 max_body_size: <%=@conf_max_body_size %>
-    
+
+# a list of other known repositories we can talk to
+uplinks:
+  npmjs:
+    url: https://registry.npmjs.org/
+
+    # amount of time (in milliseconds) to wait for repository to respond
+    # before giving up and use the local cached copy
+    #timeout: 30000
+
+    # maximum time (in seconds) in which data is considered up to date
+    #
+    # default is 2 minutes, so server won't request the same data from
+    # uplink if a similar request was made less than 2 minutes ago
+    #maxage: 120
+    maxage: <%=@conf_max_age_in_sec %>
+
+packages:
