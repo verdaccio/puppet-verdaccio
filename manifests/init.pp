@@ -35,7 +35,9 @@ class verdaccio (
   $service_template          = 'verdaccio/service.erb',
   $conf_max_body_size        = '1mb',
   $conf_max_age_in_sec       = '86400',
-  $install_as_service        = true,) {
+  $install_as_service        = true,
+  $public_npmjs_proxy        = true,
+  $url_prefix                = undef,) {
   require nodejs
   $install_path = "${install_root}/${install_dir}"
 
@@ -81,13 +83,26 @@ class verdaccio (
 ###
 # config.yaml requires $admin_pw_hash, $port, $listen_to_address
 ###
-  file { "${install_path}/config.yaml":
-    ensure  => present,
-    owner   => $daemon_user,
-    group   => $daemon_user,
-    content => template($conf_template),
-    require => File[$install_path],
-    notify  => $service_notify,
+  concat { "${install_path}/config.yaml":
+    owner          => $daemon_user,
+    group          => $daemon_user,
+    mode           => '0644',
+    require        => File[$install_path],
+    notify         => $service_notify,
+    ensure_newline => true,
+  }
+  concat::fragment { 'config.yaml > except packages':
+    target  => "${install_path}/config.yaml",
+    content => template('verdaccio/config.yaml.erb'),
+    order   => '000000',
+  }
+  if $public_npmjs_proxy {
+    verdaccio::package { '*':
+      allow_access => 'all',
+      proxy        => 'npmjs',
+      install_path => $install_path,
+      order        => 'ZZZZZZ',
+    }
   }
 
   file { "${install_path}/daemon.log":
@@ -111,11 +126,13 @@ class verdaccio (
       enable    => true,
       hasstatus => true,
       restart   => true,
-      require   => File[
-        $init_file,
-        "${install_path}/config.yaml",
-        "${install_path}/daemon.log"
-      ]
+      require   => [
+        File[
+          $init_file,
+          "${install_path}/daemon.log"
+        ],
+        Concat["${install_path}/config.yaml"],
+      ],
     }
   }
 }
