@@ -32,6 +32,21 @@ You can generate the admin password hash according to https://github.com/verdacc
   > crypto.createHash('sha1').update('your-admin-password').digest('hex')
 ```
 
+If you want to manage user accounts with an `htpasswd` file instead of a list of users, omit `config_admin_pw_hash`, set `htpasswd_auth => true` and decide how to manage the `htpasswd` file, e.g.:
+
+```
+  class { '::verdaccio':
+    htpasswd_auth => true,
+  }
+  file { '/opt/verdaccio/htpasswd':
+    ensure  => present,
+    source  => 'puppet:///modules/site/verdaccio/htpasswd',
+    owner   => 'verdaccio',
+    group   => 'verdaccio',
+    mode    => '0600',
+  }
+```
+
 You can also override several configuration parameters.
 
 ```bash
@@ -51,6 +66,7 @@ You can also override several configuration parameters.
     install_as_service      => false,
     public_npmjs_proxy      => false,
     url_prefix              => 'https://dev.company.local/sinopia/',
+    htpasswd_auth           => true,
   }
 ```
 
@@ -63,7 +79,7 @@ The default values for all so far configurable parameters are:
     daemon_user               => 'verdaccio',
     conf_listen_to_address    => '0.0.0.0',
     conf_port                 => '4873',
-    conf_admin_pw_hash
+    conf_admin_pw_hash        => undef,
     conf_user_pw_combinations => undef,
     http_proxy                => '',
     https_proxy               => '',
@@ -74,6 +90,7 @@ The default values for all so far configurable parameters are:
     install_as_service        => true,
     public_npmjs_proxy        => true,
     url_prefix                => undef,
+    htpasswd_auth             => false,
   }
 ```
 
