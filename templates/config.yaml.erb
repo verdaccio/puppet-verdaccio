@@ -2,6 +2,11 @@
 storage: ./storage
 
 # a list of users
+<%- if @htpasswd_auth -%>
+auth:
+  htpasswd:
+    file: ./htpasswd
+<% else -%>
 users:
   admin:
     # crypto.createHash('sha1').update(pass).digest('hex')
@@ -10,6 +15,7 @@ users:
 <%- @conf_user_pw_combinations.each do |combi|
          -%>  <%= combi[0] %>:
     password: <%= combi[1] %>
+<% end -%>
 <% end -%>
 <% end -%>
 

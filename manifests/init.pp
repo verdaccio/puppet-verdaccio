@@ -27,7 +27,7 @@ class verdaccio (
   $package_name              = 'verdaccio',
   $conf_listen_to_address    = '0.0.0.0',
   $conf_port                 = '4873',
-  $conf_admin_pw_hash,
+  $conf_admin_pw_hash        = undef,
   $conf_user_pw_combinations = undef,
   $http_proxy                = '',
   $https_proxy               = '',
@@ -37,9 +37,14 @@ class verdaccio (
   $conf_max_age_in_sec       = '86400',
   $install_as_service        = true,
   $public_npmjs_proxy        = true,
-  $url_prefix                = undef,) {
+  $url_prefix                = undef,
+  $htpasswd_auth             = false,) {
   require nodejs
   $install_path = "${install_root}/${install_dir}"
+
+  if !($conf_admin_pw_hash or $htpasswd_auth) {
+    fail('Supply $conf_admin_pwd_hash or set $htpasswd_auth => true')
+  }
 
   group { $daemon_user:
     ensure => present,
