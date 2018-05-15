@@ -33,6 +33,7 @@ class verdaccio (
   $https_proxy               = '',
   $conf_template             = 'verdaccio/config.yaml.erb',
   $service_template          = 'verdaccio/service.erb',
+  $service_ensure            = 'running',
   $conf_max_body_size        = '1mb',
   $conf_max_age_in_sec       = '86400',
   $install_as_service        = true,
@@ -127,7 +128,7 @@ class verdaccio (
     }
 
     service { 'verdaccio':
-      ensure    => running,
+      ensure    => $service_ensure,
       enable    => true,
       hasstatus => true,
       restart   => true,
