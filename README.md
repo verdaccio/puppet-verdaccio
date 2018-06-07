@@ -67,6 +67,7 @@ You can also override several configuration parameters.
     install_as_service      => false,
     public_npmjs_proxy      => false,
     url_prefix              => 'https://dev.company.local/sinopia/',
+    time_out                => '30000'
     htpasswd_auth           => true,
   }
 ```
@@ -92,6 +93,7 @@ The default values for all so far configurable parameters are:
     install_as_service        => true,
     public_npmjs_proxy        => true,
     url_prefix                => undef,
+    time_out                  => undef
     htpasswd_auth             => false,
   }
 ```
