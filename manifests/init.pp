@@ -39,6 +39,7 @@ class verdaccio (
   $install_as_service        = true,
   $public_npmjs_proxy        = true,
   $url_prefix                = undef,
+  $time_out                  = undef,
   $htpasswd_auth             = false,) {
   require nodejs
   $install_path = "${install_root}/${install_dir}"
@@ -78,12 +79,12 @@ class verdaccio (
     default => $version
   }
   nodejs::npm { $package_name:
-      ensure       => $npm_ensure,
-      target       => $install_path,
-      user         => $daemon_user,
-      home_dir     => "/home/${daemon_user}/.npm",
-      require      => [File[$install_path],User[$daemon_user]],
-      notify       => $service_notify,
+    ensure   => $npm_ensure,
+    target   => $install_path,
+    user     => $daemon_user,
+    home_dir => "/home/${daemon_user}/.npm",
+    require  => [File[$install_path],User[$daemon_user]],
+    notify   => $service_notify,
   }
 
 ###
