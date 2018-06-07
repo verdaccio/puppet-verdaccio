@@ -67,7 +67,7 @@ You can also override several configuration parameters.
     install_as_service      => false,
     public_npmjs_proxy      => false,
     url_prefix              => 'https://dev.company.local/sinopia/',
-    time_out                 => '30000'
+    time_out                => '30000'
     htpasswd_auth           => true,
   }
 ```
