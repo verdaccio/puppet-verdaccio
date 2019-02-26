@@ -100,7 +100,7 @@ class verdaccio (
   }
   concat::fragment { 'config.yaml > except packages':
     target  => "${install_path}/config.yaml",
-    content => template('verdaccio/config.yaml.erb'),
+    content => template($conf_template),
     order   => '000000',
   }
   if $public_npmjs_proxy {
