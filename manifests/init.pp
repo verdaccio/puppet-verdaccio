@@ -75,14 +75,14 @@ class verdaccio (
     true => Service['verdaccio']
   }
   $npm_ensure = $version ? {
-    undef => 'latest',
+    undef => 'present',
     default => $version
   }
   nodejs::npm { $package_name:
     ensure   => $npm_ensure,
     target   => $install_path,
     user     => $daemon_user,
-    home_dir => "/home/${daemon_user}/.npm",
+    home_dir => "/home/${daemon_user}",
     require  => [File[$install_path],User[$daemon_user]],
     notify   => $service_notify,
   }
