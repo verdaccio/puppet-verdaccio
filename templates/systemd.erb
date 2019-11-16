@@ -1,0 +1,11 @@
+[Unit]
+Description=Verdaccio lightweight npm proxy registry
+
+[Service]
+Type=simple
+Restart=on-failure
+User=verdaccio
+ExecStart=<%= @install_path %>/node_modules/verdaccio/bin/verdaccio --config <%= @install_path %>/config.yaml
+
+[Install]
+WantedBy=multi-user.target
