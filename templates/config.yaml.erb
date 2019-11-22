@@ -47,6 +47,12 @@ auth:
       - '<%= attr %>'
 <% end -%>
 <% end -%>
+<%- if @ldap_tls_options -%>
+      tlsOptions:
+<%- @ldap_tls_options.each do |key, val| -%>
+        <%= key %>: <%= val %>
+<% end -%>
+<% end -%>
       reconnect: true
 <% else -%>
 users:

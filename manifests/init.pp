@@ -52,7 +52,8 @@ class verdaccio (
   $ldap_group_dn_property    = undef,
   $ldap_group_search_base    = undef,
   $ldap_group_search_filter  = undef,
-  $ldap_search_attributes    = undef) {
+  $ldap_search_attributes    = undef,
+  $ldap_tls_options          = undef) {
   require nodejs
   $install_path = "${install_root}/${install_dir}"
 
