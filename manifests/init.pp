@@ -36,6 +36,7 @@ class verdaccio (
   $service_ensure            = 'running',
   $conf_max_body_size        = '1mb',
   $conf_max_age_in_sec       = '86400',
+  $storage_location          = './storage',
   $install_as_service        = true,
   $public_npmjs_proxy        = true,
   $url_prefix                = undef,
