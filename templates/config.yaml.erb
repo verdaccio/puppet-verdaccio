@@ -6,6 +6,54 @@ storage: <%= @storage_location %>
 auth:
   htpasswd:
     file: ./htpasswd
+<% elsif @ldap_auth -%>
+auth:
+  ldap:
+    type: 'ldap'
+<%- if @ldap_group_name_attribute -%>
+    groupNameAttribute: '<%= @ldap_group_name_attribute %>'
+<% end -%>
+    cache:
+      size: 100
+      expire: 300
+    client_options:
+<%- if @ldap_url -%>
+      url: '<%= @ldap_url %>'
+<% end -%>
+<%- if @ldap_bind_dn -%>
+      bindDn: '<%= @ldap_bind_dn %>'
+<% end -%>
+<%- if @ldap_bind_credentials -%>
+      bindCredentials: '<%= @ldap_bind_credentials %>'
+<% end -%>
+<%- if @ldap_search_base -%>
+      searchBase: '<%= @ldap_search_base %>'
+<% end -%>
+<%- if @ldap_search_filter -%>
+      searchFilter: '<%= @ldap_search_filter %>'
+<% end -%>
+<%- if @ldap_group_dn_property -%>
+      groupDnProperty: '<%= @ldap_group_dn_property %>'
+<% end -%>
+<%- if @ldap_group_search_base -%>
+      groupSearchBase: '<%= @ldap_group_search_base %>'
+<% end -%>
+<%- if @ldap_group_search_filter -%>
+      groupSearchFilter: '<%= @ldap_group_search_filter %>'
+<% end -%>
+<%- if @ldap_search_attributes -%>
+      searchAttributes:
+<%- @ldap_search_attributes.each do |attr| -%>
+      - '<%= attr %>'
+<% end -%>
+<% end -%>
+<%- if @ldap_tls_options -%>
+      tlsOptions:
+<%- @ldap_tls_options.each do |key, val| -%>
+        <%= key %>: <%= val %>
+<% end -%>
+<% end -%>
+      reconnect: true
 <% else -%>
 users:
   admin:

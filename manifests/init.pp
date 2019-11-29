@@ -41,12 +41,25 @@ class verdaccio (
   $public_npmjs_proxy        = true,
   $url_prefix                = undef,
   $time_out                  = undef,
-  $htpasswd_auth             = false,) {
+  $htpasswd_auth             = false,
+  $ldap_auth                 = false,
+  $ldap_plugin_version       = undef,    # latest
+  $ldap_group_name_attribute = undef,
+  $ldap_url                  = undef,
+  $ldap_bind_dn              = undef,
+  $ldap_bind_credentials     = undef,
+  $ldap_search_base          = undef,
+  $ldap_search_filter        = undef,
+  $ldap_group_dn_property    = undef,
+  $ldap_group_search_base    = undef,
+  $ldap_group_search_filter  = undef,
+  $ldap_search_attributes    = undef,
+  $ldap_tls_options          = undef) {
   require nodejs
   $install_path = "${install_root}/${install_dir}"
 
-  if !($conf_admin_pw_hash or $htpasswd_auth) {
-    fail('Supply $conf_admin_pwd_hash or set $htpasswd_auth => true')
+  if !($conf_admin_pw_hash or $htpasswd_auth or $ldap_auth) {
+    fail('Supply $conf_admin_pwd_hash or set $htpasswd_auth => true or set $ldap_auth => true')
   }
 
   group { $daemon_user:
@@ -86,6 +99,21 @@ class verdaccio (
     home_dir => "/home/${daemon_user}/.npm",
     require  => [File[$install_path],User[$daemon_user]],
     notify   => $service_notify,
+  }
+
+  if $ldap_auth {
+    $ldap_plugin_npm_ensure = $version ? {
+      undef => 'present',
+      default => $ldap_plugin_version
+    }
+    nodejs::npm { 'verdaccio-ldap':
+      ensure   => $ldap_plugin_npm_ensure,
+      target   => $install_path,
+      user     => $daemon_user,
+      home_dir => "/home/${daemon_user}",
+      require  => [File[$install_path],User[$daemon_user]],
+      notify   => $service_notify,
+    }
   }
 
 ###
