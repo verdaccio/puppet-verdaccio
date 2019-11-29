@@ -33,6 +33,7 @@ class verdaccio (
   $https_proxy               = '',
   $conf_template             = 'verdaccio/config.yaml.erb',
   $service_template          = 'verdaccio/service.erb',
+  $systemd_template          = 'verdaccio/systemd.erb',
   $service_ensure            = 'running',
   $conf_max_body_size        = '1mb',
   $conf_max_age_in_sec       = '86400',
@@ -141,34 +142,52 @@ class verdaccio (
     }
   }
 
-  file { "${install_path}/daemon.log":
-    ensure  => present,
-    owner   => $daemon_user,
-    group   => $daemon_user,
-    require => File[$install_path],
-  }
-
   if $install_as_service {
-    $init_file = '/etc/init.d/verdaccio'
+    if $facts['systemd'] {
+      include ::systemd
 
-    file { $init_file:
-      content => template($service_template),
-      mode    => '0755',
-      notify  => $service_notify,
-    }
+      systemd::unit_file { 'verdaccio.service':
+        content => template($systemd_template),
+        enable  => true,
+      }
 
-    service { 'verdaccio':
-      ensure    => $service_ensure,
-      enable    => true,
-      hasstatus => true,
-      restart   => true,
-      require   => [
-        File[
-          $init_file,
-          "${install_path}/daemon.log"
+      service { 'verdaccio':
+        ensure  => $service_ensure,
+        enable  => true,
+        require => [
+          Systemd::Unit_file['verdaccio.service'],
+          Concat["${install_path}/config.yaml"]
         ],
-        Concat["${install_path}/config.yaml"],
-      ],
+      }
+    } else {
+      file { "${install_path}/daemon.log":
+        ensure  => present,
+        owner   => $daemon_user,
+        group   => $daemon_user,
+        require => File[$install_path],
+      }
+
+      $init_file = '/etc/init.d/verdaccio'
+
+      file { $init_file:
+        content => template($service_template),
+        mode    => '0755',
+        notify  => $service_notify,
+      }
+
+      service { 'verdaccio':
+        ensure    => $service_ensure,
+        enable    => true,
+        hasstatus => true,
+        restart   => true,
+        require   => [
+          File[
+            $init_file,
+            "${install_path}/daemon.log"
+          ],
+          Concat["${install_path}/config.yaml"],
+        ],
+      }
     }
   }
 }
